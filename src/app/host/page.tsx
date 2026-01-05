@@ -1,9 +1,7 @@
-function App() {
+export default function Page() {
   return (
     <h1 className="text-3xl font-bold underline">
-      Hello world!
+      Hello host!
     </h1>
   );
 }
-
-export default App;
