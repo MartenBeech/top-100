@@ -1,10 +1,10 @@
 "use client";
 import { useState } from "react";
-import backgroundImage from "../images/4867851.jpg";
 import { setAnswer, setPlayer } from "../firebase/firestore";
 import { Textarea } from "../components/textarea";
 import { SubmitButton } from "../components/submitButton";
 import { Input } from "../components/textField";
+import { BackgroundImage } from "../components/backgroundImage";
 
 interface Props {
   number: string;
@@ -17,11 +17,7 @@ export const User = (props: Props) => {
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
-      <img
-        className="absolute w-dvw h-dvh -z-10"
-        src={backgroundImage.src}
-        alt="bgImg"
-      />
+      <BackgroundImage />
       {!nameSubmitted && (
         <>
           <Input placeholder="Insert name..." setText={setName} text={name} />

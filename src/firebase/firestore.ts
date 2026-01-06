@@ -1,4 +1,10 @@
-import { doc, collection, setDoc, getDocs } from "firebase/firestore";
+import {
+  doc,
+  collection,
+  setDoc,
+  getDocs,
+  onSnapshot,
+} from "firebase/firestore";
 import { db } from "./app";
 
 interface setAnswerProps {
@@ -8,7 +14,7 @@ interface setAnswerProps {
 }
 
 export const setAnswer = async (props: setAnswerProps) => {
-  const colRef = collection(db, "answers");
+  const colRef = collection(db, "players");
   await setDoc(doc(colRef, props.playerName), {
     number: props.playerNumber,
     answer: props.answer,
@@ -19,13 +25,15 @@ export const setAnswer = async (props: setAnswerProps) => {
 interface getAnswersRes {
   number: string;
   answer: string;
+  name: string;
 }
 
 export const getAnswers = async (): Promise<getAnswersRes[]> => {
-  const querySnapshot = await getDocs(collection(db, "answers"));
+  const querySnapshot = await getDocs(collection(db, "players"));
   const docData: getAnswersRes[] = querySnapshot.docs.map((doc) => {
     const data = doc.data();
     return {
+      name: data.name,
       answer: data.answer,
       number: data.number,
     };
@@ -38,10 +46,24 @@ interface setPlayerProps {
 }
 
 export const setPlayer = async (props: setPlayerProps) => {
-  const colRef = collection(db, "answers");
+  const colRef = collection(db, "players");
   await setDoc(doc(colRef, props.playerName), {
     number: "",
     answer: "",
     name: props.playerName,
   });
 };
+
+export const onPlayersChange = onSnapshot(
+  collection(db, "players"),
+  (collection) => {
+    return collection.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        name: data.name,
+        answer: data.answer,
+        number: data.number,
+      };
+    });
+  }
+);

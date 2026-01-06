@@ -1,7 +1,5 @@
+import Host from "./hostClient";
+
 export default function Page() {
-  return (
-    <h1 className="text-3xl font-bold underline">
-      Hello host!
-    </h1>
-  );
+  return <Host />;
 }
