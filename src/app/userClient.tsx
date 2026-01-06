@@ -1,7 +1,10 @@
 "use client";
 import { useState } from "react";
 import backgroundImage from "../images/4867851.jpg";
-import { setAnswer } from "../firebase/firestore";
+import { setAnswer, setPlayer } from "../firebase/firestore";
+import { Textarea } from "../components/textarea";
+import { SubmitButton } from "../components/submitButton";
+import { Input } from "../components/textField";
 
 interface Props {
   number: string;
@@ -9,38 +12,50 @@ interface Props {
 
 export const User = (props: Props) => {
   const [text, setText] = useState("");
+  const [name, setName] = useState("");
+  const [nameSubmitted, setNameSubmitted] = useState(false);
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
-      <span className="mb-4 text-gray-300">YOUR MAGIC NUMBER IS</span>
-      <span className="mb-28 text-9xl text-gray-300">{props.number}</span>
-      <textarea
-        value={text}
-        placeholder="Fill me up with text..."
-        className="border rounded-lg w-2/3 mb-4 h-20 bg-gray-300 p-1"
-        onChange={(e) => {
-          setText(e.target.value);
-        }}
-      />
-      <button
-        className="border rounded-lg p-1 w-1/2 bg-purple-600 disabled:opacity-50"
-        disabled={!text}
-        onClick={() => {
-          if (!text) return;
-          setAnswer({
-            answer: text,
-            playerName: "Name",
-            playerNumber: props.number,
-          });
-        }}
-      >
-        SUBMIT
-      </button>
       <img
         className="absolute w-dvw h-dvh -z-10"
         src={backgroundImage.src}
         alt="bgImg"
       />
+      {!nameSubmitted && (
+        <>
+          <Input placeholder="Insert name..." setText={setName} text={name} />
+          <SubmitButton
+            disabled={!name}
+            onClick={() => {
+              setPlayer({ playerName: name }).then(() => {
+                setNameSubmitted(true);
+              });
+            }}
+          />
+        </>
+      )}
+      {nameSubmitted && (
+        <>
+          <span className="mb-16 text-gray-300 max-w-dvw overflow-clip">
+            {name}
+          </span>
+          <span className="mb-4 text-gray-300">YOUR MAGIC NUMBER IS</span>
+          <span className="mb-28 text-9xl text-gray-300">{props.number}</span>
+          <Textarea text={text} setText={setText} />
+          <SubmitButton
+            disabled={!text}
+            onClick={() => {
+              if (!text) return;
+              setAnswer({
+                answer: text,
+                playerName: name,
+                playerNumber: props.number,
+              });
+            }}
+          />
+        </>
+      )}
     </div>
   );
 };

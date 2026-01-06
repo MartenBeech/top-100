@@ -12,6 +12,7 @@ export const setAnswer = async (props: setAnswerProps) => {
   await setDoc(doc(colRef, props.playerName), {
     number: props.playerNumber,
     answer: props.answer,
+    name: props.playerName,
   });
 };
 
@@ -30,4 +31,17 @@ export const getAnswers = async (): Promise<getAnswersRes[]> => {
     };
   });
   return docData;
+};
+
+interface setPlayerProps {
+  playerName: string;
+}
+
+export const setPlayer = async (props: setPlayerProps) => {
+  const colRef = collection(db, "answers");
+  await setDoc(doc(colRef, props.playerName), {
+    number: "",
+    answer: "",
+    name: props.playerName,
+  });
 };
