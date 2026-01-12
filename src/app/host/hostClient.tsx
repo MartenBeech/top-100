@@ -1,23 +1,25 @@
 "use client";
 import { useEffect, useState } from "react";
-import { StartButton } from "../../components/startButton";
 import { BackgroundImage } from "../../components/backgroundImage";
-import { PlayersReadyButton } from "../../components/PlayersReadyButton";
 import { prompts } from "./prompts";
 import { Player } from "../../interfaces/player";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/app";
 import { getSnapshotPlayers, resetPlayers } from "../../firebase/firestore";
+import { GameInitiating } from "./gamePhases/gameInitiating";
+import { PromptRevealed } from "./gamePhases/promptRevealed";
+import { Guessing } from "./gamePhases/guessing";
 
 export default function Host() {
   const [gamePhase, setGamePhase] = useState<
-    "GameNotStarted" | "PromptRevealed" | "Guessing"
-  >("GameNotStarted");
+    "GameInitiating" | "PromptRevealed" | "Guessing"
+  >("GameInitiating");
   const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
     if (gamePhase === "PromptRevealed") {
-      resetPlayers();
+      // setPlayers([]);
+      // resetPlayers();
     }
   }, [gamePhase]);
 
@@ -25,41 +27,21 @@ export default function Host() {
     setPlayers(getSnapshotPlayers({ docSnap }));
   });
 
-  const playersReady = players.filter((player) => player.answer).length;
-
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
       <BackgroundImage />
-      {gamePhase === "GameNotStarted" && (
-        <>
-          <span className="mb-20 px-40 text-gray-300 text-6xl">TOP 100</span>
-          <div className="flex flex-col mb-10 gap-2">
-            {players.map((player, index) => (
-              <span
-                className="text-gray-300 text-2xl"
-                key={`${player}-${index}`}
-              >
-                {player.name}
-              </span>
-            ))}
-          </div>
-          <StartButton
-            onClick={() => {
-              setGamePhase("PromptRevealed");
-            }}
-          />
-        </>
+      {gamePhase === "GameInitiating" && (
+        <GameInitiating players={players} setGamePhase={setGamePhase} />
       )}
       {gamePhase === "PromptRevealed" && (
-        <>
-          <span className="mb-80 px-40 text-gray-300 text-6xl">
-            {prompts[0]}
-          </span>
-          <span className="text-gray-300 text-3xl mb-6">
-            PLAYERS READY: {playersReady}
-          </span>
-          <PlayersReadyButton onClick={() => {}} />
-        </>
+        <PromptRevealed
+          players={players}
+          prompt={prompts[0]}
+          setGamePhase={setGamePhase}
+        />
+      )}
+      {gamePhase === "Guessing" && (
+        <Guessing players={players} prompt={prompts[0]} />
       )}
     </div>
   );

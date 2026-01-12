@@ -3,7 +3,7 @@ import { useState } from "react";
 import { updatePlayer, setPlayer } from "../firebase/firestore";
 import { Textarea } from "../components/textarea";
 import { SubmitButton } from "../components/submitButton";
-import { Input } from "../components/textField";
+import { Input } from "../components/input";
 import { BackgroundImage } from "../components/backgroundImage";
 
 interface Props {
