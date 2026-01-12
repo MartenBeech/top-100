@@ -1,69 +1,45 @@
 import {
   doc,
-  collection,
   setDoc,
-  getDocs,
-  onSnapshot,
+  updateDoc,
+  DocumentData,
+  DocumentSnapshot,
 } from "firebase/firestore";
 import { db } from "./app";
+import { Player } from "../interfaces/player";
 
-interface setAnswerProps {
-  playerName: string;
-  playerNumber: string;
-  answer: string;
-}
-
-export const setAnswer = async (props: setAnswerProps) => {
-  const colRef = collection(db, "players");
-  await setDoc(doc(colRef, props.playerName), {
-    number: props.playerNumber,
-    answer: props.answer,
-    name: props.playerName,
-  });
-};
-
-interface getAnswersRes {
-  number: string;
-  answer: string;
+interface setPlayerProps {
   name: string;
 }
 
-export const getAnswers = async (): Promise<getAnswersRes[]> => {
-  const querySnapshot = await getDocs(collection(db, "players"));
-  const docData: getAnswersRes[] = querySnapshot.docs.map((doc) => {
-    const data = doc.data();
-    return {
-      name: data.name,
-      answer: data.answer,
-      number: data.number,
-    };
+export const setPlayer = async (props: setPlayerProps) => {
+  const player: Player = { answer: "", name: props.name, number: "" };
+
+  await updateDoc(doc(db, "game", "players"), {
+    [props.name]: JSON.stringify(player),
   });
-  return docData;
 };
 
-interface setPlayerProps {
-  playerName: string;
+export const updatePlayer = async (props: Player) => {
+  const player: Player = { ...props };
+
+  await updateDoc(doc(db, "game", "players"), {
+    [props.name]: JSON.stringify(player),
+  });
+};
+
+interface getPlayersProps {
+  docSnap: DocumentSnapshot<DocumentData, DocumentData>;
 }
 
-export const setPlayer = async (props: setPlayerProps) => {
-  const colRef = collection(db, "players");
-  await setDoc(doc(colRef, props.playerName), {
-    number: "",
-    answer: "",
-    name: props.playerName,
-  });
+export const getSnapshotPlayers = (props: getPlayersProps): Player[] => {
+  const data = props.docSnap.data();
+  if (data) {
+    return Object.values(data).map((value) => JSON.parse(value));
+  }
+  return [];
 };
 
-export const onPlayersChange = onSnapshot(
-  collection(db, "players"),
-  (collection) => {
-    return collection.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        name: data.name,
-        answer: data.answer,
-        number: data.number,
-      };
-    });
-  }
-);
+export const resetPlayers = async () => {
+  await setDoc(doc(db, "game", "players"), {});
+};

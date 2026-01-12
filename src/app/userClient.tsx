@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { setAnswer, setPlayer } from "../firebase/firestore";
+import { updatePlayer, setPlayer } from "../firebase/firestore";
 import { Textarea } from "../components/textarea";
 import { SubmitButton } from "../components/submitButton";
 import { Input } from "../components/textField";
@@ -24,7 +24,7 @@ export const User = (props: Props) => {
           <SubmitButton
             disabled={!name}
             onClick={() => {
-              setPlayer({ playerName: name }).then(() => {
+              setPlayer({ name }).then(() => {
                 setNameSubmitted(true);
               });
             }}
@@ -43,10 +43,10 @@ export const User = (props: Props) => {
             disabled={!text}
             onClick={() => {
               if (!text) return;
-              setAnswer({
+              updatePlayer({
                 answer: text,
-                playerName: name,
-                playerNumber: props.number,
+                name: name,
+                number: props.number,
               });
             }}
           />

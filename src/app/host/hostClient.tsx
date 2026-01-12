@@ -1,12 +1,13 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StartButton } from "../../components/startButton";
 import { BackgroundImage } from "../../components/backgroundImage";
 import { PlayersReadyButton } from "../../components/PlayersReadyButton";
 import { prompts } from "./prompts";
 import { Player } from "../../interfaces/player";
-import { collection, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/app";
+import { getSnapshotPlayers, resetPlayers } from "../../firebase/firestore";
 
 export default function Host() {
   const [gamePhase, setGamePhase] = useState<
@@ -14,17 +15,14 @@ export default function Host() {
   >("GameNotStarted");
   const [players, setPlayers] = useState<Player[]>([]);
 
-  onSnapshot(collection(db, "players"), (collection) => {
-    setPlayers(
-      collection.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          name: data.name,
-          answer: data.answer,
-          number: data.number,
-        };
-      })
-    );
+  useEffect(() => {
+    if (gamePhase === "PromptRevealed") {
+      resetPlayers();
+    }
+  }, [gamePhase]);
+
+  onSnapshot(doc(db, "game", "players"), (docSnap) => {
+    setPlayers(getSnapshotPlayers({ docSnap }));
   });
 
   const playersReady = players.filter((player) => player.answer).length;
