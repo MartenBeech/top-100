@@ -21,7 +21,6 @@ export const PlayerCard = (props: Props) => {
         text={text}
         setText={setText}
         fullLength
-        numbersOnly
         disabled={submitted}
       />
       <SubmitButton

@@ -6,14 +6,12 @@ interface Props {
   placeholder: string;
   setText: Dispatch<SetStateAction<string>>;
   fullLength?: boolean;
-  numbersOnly?: boolean;
   disabled?: boolean;
 }
 
 export const Input = (props: Props) => {
   return (
     <input
-      type={props.numbersOnly ? "number" : "text"}
       value={props.text}
       placeholder={props.placeholder}
       className={`border rounded-lg mb-4 bg-gray-300 p-1 text-lg ${

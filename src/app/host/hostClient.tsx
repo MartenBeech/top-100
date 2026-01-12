@@ -41,7 +41,11 @@ export default function Host() {
         />
       )}
       {gamePhase === "Guessing" && (
-        <Guessing players={players} prompt={prompts[0]} />
+        <Guessing
+          players={players}
+          prompt={prompts[0]}
+          setGamePhase={setGamePhase}
+        />
       )}
     </div>
   );
