@@ -13,7 +13,7 @@ export const PlayerCard = (props: Props) => {
 
   return (
     <div className="flex flex-col bg-gray-300 w-60 p-3 rounded-xl border shadow-2xl">
-      <span className="mb-8 h-40 text-xl wrap-break-word hyphens-auto">
+      <span className="mb-8 h-32 text-2xl wrap-break-word hyphens-auto">
         {props.player.answer}
       </span>
       <Input
