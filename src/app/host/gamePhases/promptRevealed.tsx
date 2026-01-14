@@ -1,4 +1,4 @@
-import { Player } from "../../../interfaces/player";
+import { Player } from "../../../definitions/player";
 import { Dispatch, SetStateAction } from "react";
 import { StateButton } from "../../../components/stateButton";
 

@@ -2,25 +2,36 @@
 import { useEffect, useState } from "react";
 import { BackgroundImage } from "../../components/backgroundImage";
 import { prompts } from "./prompts";
-import { Player } from "../../interfaces/player";
+import { Player } from "../../definitions/player";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../../firebase/app";
-import { getSnapshotPlayers, resetPlayers } from "../../firebase/firestore";
+import {
+  getPlayers,
+  getSnapshotPlayers,
+  resetPlayers,
+  updateGamePhase,
+} from "../../firebase/firestore";
 import { GameInitiating } from "./gamePhases/gameInitiating";
 import { PromptRevealed } from "./gamePhases/promptRevealed";
 import { Guessing } from "./gamePhases/guessing";
+import { GamePhase } from "../../definitions/gamePhase";
 
 export default function Host() {
-  const [gamePhase, setGamePhase] = useState<
-    "GameInitiating" | "PromptRevealed" | "Guessing"
-  >("GameInitiating");
+  const [gamePhase, setGamePhase] = useState<GamePhase>("GameInitiating");
   const [players, setPlayers] = useState<Player[]>([]);
 
   useEffect(() => {
-    if (gamePhase === "PromptRevealed") {
-      // setPlayers([]);
-      // resetPlayers();
+    if (gamePhase === "GameInitiating") {
+      const getCurrentPlayers = async () => {
+        setPlayers(await getPlayers());
+      };
+      getCurrentPlayers();
     }
+    if (gamePhase === "PromptRevealed") {
+      setPlayers([]);
+      resetPlayers();
+    }
+    updateGamePhase({ gamePhase });
   }, [gamePhase]);
 
   onSnapshot(doc(db, "game", "players"), (docSnap) => {
@@ -30,22 +41,22 @@ export default function Host() {
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
       <BackgroundImage />
-      {gamePhase === "GameInitiating" && (
+      {gamePhase === "GameInitiating" ? (
         <GameInitiating players={players} setGamePhase={setGamePhase} />
-      )}
-      {gamePhase === "PromptRevealed" && (
+      ) : gamePhase === "PromptRevealed" ? (
         <PromptRevealed
           players={players}
           prompt={prompts[0]}
           setGamePhase={setGamePhase}
         />
-      )}
-      {gamePhase === "Guessing" && (
+      ) : gamePhase === "Guessing" ? (
         <Guessing
           players={players}
           prompt={prompts[0]}
           setGamePhase={setGamePhase}
         />
+      ) : (
+        <span>error</span>
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { Player } from "../../../interfaces/player";
+import { Player } from "../../../definitions/player";
 import { StateButton } from "../../../components/stateButton";
 
 interface Props {
