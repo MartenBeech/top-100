@@ -13,7 +13,7 @@ export const Input = (props: Props) => {
     <input
       value={props.text}
       placeholder={props.placeholder}
-      className={`border rounded-lg mb-4 bg-gray-300 p-1 text-lg ${
+      className={`border rounded-lg mb-4 bg-gray-300 p-1 text-xl disabled:opacity-50 ${
         props.fullLength ? "w-full" : "w-2/3"
       }`}
       onChange={(e) => {
