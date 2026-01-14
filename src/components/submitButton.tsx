@@ -1,5 +1,3 @@
-"use client";
-
 interface Props {
   disabled: boolean;
   onClick: () => void;

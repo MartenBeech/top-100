@@ -1,5 +1,3 @@
-"use client";
-
 interface Props {
   onClick: () => void;
   title: string;
