@@ -2,13 +2,14 @@ import { Dispatch, SetStateAction } from "react";
 import { PlayerCard } from "../../../components/playerCard";
 import { StateButton } from "../../../components/stateButton";
 import { Player } from "../../../definitions/player";
+import { resetPlayers } from "../../../firebase/firestore";
 
 interface Props {
   players: Player[];
+  prompt: string;
   setGamePhase: Dispatch<
     SetStateAction<"PromptRevealed" | "GameInitiating" | "Guessing">
   >;
-  prompt: string;
 }
 
 export const Guessing = (props: Props) => {
@@ -24,7 +25,9 @@ export const Guessing = (props: Props) => {
       </div>
       <StateButton
         onClick={() => {
-          props.setGamePhase("PromptRevealed");
+          resetPlayers().then(() => {
+            props.setGamePhase("PromptRevealed");
+          });
         }}
         title="NEXT ROUND"
       />

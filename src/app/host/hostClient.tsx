@@ -36,10 +36,6 @@ export default function Host() {
       };
       getCurrentPlayers();
     }
-    if (gamePhase === "PromptRevealed") {
-      setPlayers([]);
-      resetPlayers();
-    }
     updateGamePhase({ gamePhase });
   }, [gamePhase]);
 
