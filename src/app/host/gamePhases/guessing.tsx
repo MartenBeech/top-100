@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { PlayerCard } from "../../../components/playerCard";
 import { StateButton } from "../../../components/stateButton";
 import { Player } from "../../../definitions/player";
@@ -13,6 +13,7 @@ interface Props {
 }
 
 export const Guessing = (props: Props) => {
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <>
       <span className="mb-12 px-40 text-gray-300 text-6xl text-center">
@@ -24,7 +25,9 @@ export const Guessing = (props: Props) => {
         })}
       </div>
       <StateButton
+        disabled={isLoading}
         onClick={() => {
+          setIsLoading(true);
           resetPlayers().then(() => {
             props.setGamePhase("PromptRevealed");
           });
