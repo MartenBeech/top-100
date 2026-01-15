@@ -1,4 +1,4 @@
-import Host from "./hostClient";
+import { Host } from "./hostClient";
 
 export default function Page() {
   return <Host />;

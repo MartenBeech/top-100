@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import { Login } from "./loginClient";
 
 export default function Home() {
-  redirect("/player");
+  return <Login />;
 }
