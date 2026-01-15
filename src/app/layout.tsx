@@ -1,15 +1,18 @@
-import type { Metadata } from 'next';
-import './globals.css'
- 
+import type { Metadata } from "next";
+import "./globals.css";
+
 export const metadata: Metadata = {
-  title: 'React App',
-  description: 'Web site created with Next.js.',
-}
- 
+  title: "Top 100",
+  description: "Web site created with Next.js.",
+  icons: {
+    icon: "/favicon.ico",
+  },
+};
+
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -17,5 +20,5 @@ export default function RootLayout({
         <div id="root">{children}</div>
       </body>
     </html>
-  )
+  );
 }
