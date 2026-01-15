@@ -5,10 +5,13 @@ import {
   DocumentData,
   DocumentSnapshot,
   getDoc,
+  getFirestore,
 } from "firebase/firestore";
-import { db } from "./app";
 import { Player } from "../definitions/player";
 import { GamePhase } from "../definitions/gamePhase";
+import { app } from "./app";
+
+export const db = getFirestore(app);
 
 interface setPlayerProps {
   name: string;

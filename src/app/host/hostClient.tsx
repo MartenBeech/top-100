@@ -4,7 +4,7 @@ import { BackgroundImage } from "../../components/backgroundImage";
 import { prompts } from "./prompts";
 import { Player } from "../../definitions/player";
 import { doc, onSnapshot } from "firebase/firestore";
-import { db } from "../../firebase/app";
+import { db } from "../../firebase/firestore";
 import {
   getPlayers,
   getSnapshotPlayers,
@@ -15,10 +15,19 @@ import { GameInitiating } from "./gamePhases/gameInitiating";
 import { PromptRevealed } from "./gamePhases/promptRevealed";
 import { Guessing } from "./gamePhases/guessing";
 import { GamePhase } from "../../definitions/gamePhase";
+import { Auth } from "../../firebase/auth";
 
 export default function Host() {
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [gamePhase, setGamePhase] = useState<GamePhase>("GameInitiating");
   const [players, setPlayers] = useState<Player[]>([]);
+
+  useEffect(() => {
+    const login = async () => {
+      setIsAuthorized(await Auth());
+    };
+    login();
+  }, []);
 
   useEffect(() => {
     if (gamePhase === "GameInitiating") {
@@ -37,6 +46,8 @@ export default function Host() {
   onSnapshot(doc(db, "game", "players"), (docSnap) => {
     setPlayers(getSnapshotPlayers({ docSnap }));
   });
+
+  if (!isAuthorized) return <></>;
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
