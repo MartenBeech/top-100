@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   description: "Web site created with Next.js.",
   icons: {
     icon: "/favicon.ico",
+    apple: "/favicon.ico",
   },
 };
 
