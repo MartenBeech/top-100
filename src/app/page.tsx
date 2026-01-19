@@ -1,5 +1,5 @@
-import { Home } from "./homeClient";
+import { Player } from "./player/playerClient";
 
 export default function Page() {
-  return <Home />;
+  return <Player />;
 }
