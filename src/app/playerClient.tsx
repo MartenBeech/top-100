@@ -5,9 +5,9 @@ import { BackgroundImage } from "../components/backgroundImage";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase/firestore";
 import { GamePhase } from "../definitions/gamePhase";
-import { GameInitiating } from "../components/gamePhases/player/gameInitiating";
-import { Guessing } from "../components/gamePhases/player/guessing";
-import { PromptRevealed } from "../components/gamePhases/player/promptRevealed";
+import { GameInitiating } from "../screens/player/gameInitiating";
+import { Guessing } from "../screens/player/guessing";
+import { PromptRevealed } from "../screens/player/promptRevealed";
 
 export const Player = () => {
   const [name, setName] = useState("");

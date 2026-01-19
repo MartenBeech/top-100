@@ -1,8 +1,8 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { PlayerCard } from "../../playerCard";
-import { StateButton } from "../../stateButton";
-import { Player } from "../../../definitions/player";
-import { resetPlayers } from "../../../firebase/firestore";
+import { PlayerCard } from "../../components/playerCard";
+import { StateButton } from "../../components/stateButton";
+import { Player } from "../../definitions/player";
+import { resetPlayers } from "../../firebase/firestore";
 
 interface Props {
   players: Player[];

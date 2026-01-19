@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { Input } from "../../input";
-import { SubmitButton } from "../../submitButton";
-import { setPlayer } from "../../../firebase/firestore";
+import { Input } from "../../components/input";
+import { SubmitButton } from "../../components/submitButton";
+import { setPlayer } from "../../firebase/firestore";
 
 interface Props {
   name: string;

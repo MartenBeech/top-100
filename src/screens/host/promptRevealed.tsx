@@ -1,6 +1,6 @@
-import { Player } from "../../../definitions/player";
+import { Player } from "../../definitions/player";
 import { Dispatch, SetStateAction } from "react";
-import { StateButton } from "../../stateButton";
+import { StateButton } from "../../components/stateButton";
 
 interface Props {
   players: Player[];
