@@ -10,9 +10,9 @@ import {
   getSnapshotPlayers,
   updateGamePhase,
 } from "../../firebase/firestore";
-import { GameInitiating } from "./gamePhases/gameInitiating";
-import { PromptRevealed } from "./gamePhases/promptRevealed";
-import { Guessing } from "./gamePhases/guessing";
+import { GameInitiating } from "../../components/gamePhases/host/gameInitiating";
+import { PromptRevealed } from "../../components/gamePhases/host/promptRevealed";
+import { Guessing } from "../../components/gamePhases/host/guessing";
 import { GamePhase } from "../../definitions/gamePhase";
 
 export function Host() {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Textarea } from "../../../components/textarea";
-import { SubmitButton } from "../../../components/submitButton";
+import { Textarea } from "../../textarea";
+import { SubmitButton } from "../../submitButton";
 import { updatePlayer } from "../../../firebase/firestore";
 
 interface Props {
