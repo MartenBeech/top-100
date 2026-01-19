@@ -29,9 +29,12 @@ export function Host() {
     updateGamePhase({ gamePhase });
   }, [gamePhase]);
 
-  onSnapshot(doc(db, "game", "players"), (docSnap) => {
-    setPlayers(getSnapshotPlayers({ docSnap }));
-  });
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, "game", "players"), (docSnap) => {
+      setPlayers(getSnapshotPlayers({ docSnap }));
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh">

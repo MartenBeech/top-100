@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getSnapshotState } from "../firebase/firestore";
 import { BackgroundImage } from "../components/backgroundImage";
 import { doc, onSnapshot } from "firebase/firestore";
@@ -13,9 +13,12 @@ export const Player = () => {
   const [name, setName] = useState("");
   const [gamePhase, setGamePhase] = useState<GamePhase>("GameInitiating");
 
-  onSnapshot(doc(db, "game", "state"), (docSnap) => {
-    setGamePhase(getSnapshotState({ docSnap }));
-  });
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, "game", "state"), (docSnap) => {
+      setGamePhase(getSnapshotState({ docSnap }));
+    });
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
