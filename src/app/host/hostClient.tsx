@@ -18,6 +18,15 @@ import { GamePhase } from "../../definitions/gamePhase";
 export function Host() {
   const [gamePhase, setGamePhase] = useState<GamePhase>("GameInitiating");
   const [players, setPlayers] = useState<Player[]>([]);
+  const [round, setRound] = useState(-1);
+  const [prompt, setPrompt] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, "game", "players"), (docSnap) => {
+      setPlayers(getSnapshotPlayers({ docSnap }));
+    });
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (gamePhase === "GameInitiating") {
@@ -26,15 +35,19 @@ export function Host() {
       };
       getCurrentPlayers();
     }
+    if (gamePhase === "PromptRevealed") {
+      setRound(round + 1);
+    }
     updateGamePhase({ gamePhase });
   }, [gamePhase]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(doc(db, "game", "players"), (docSnap) => {
-      setPlayers(getSnapshotPlayers({ docSnap }));
-    });
-    return () => unsubscribe();
-  }, []);
+    if (round < prompts.length) {
+      setPrompt(prompts[round]);
+    } else {
+      setPrompt("That's all Folks!");
+    }
+  }, [round]);
 
   return (
     <div className="flex flex-col items-center justify-center h-dvh">
@@ -44,13 +57,13 @@ export function Host() {
       ) : gamePhase === "PromptRevealed" ? (
         <PromptRevealed
           players={players}
-          prompt={prompts[0]}
+          prompt={prompt}
           setGamePhase={setGamePhase}
         />
       ) : gamePhase === "Guessing" ? (
         <Guessing
           players={players}
-          prompt={prompts[0]}
+          prompt={prompt}
           setGamePhase={setGamePhase}
         />
       ) : (

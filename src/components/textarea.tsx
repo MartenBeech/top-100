@@ -15,7 +15,7 @@ export const Textarea = (props: Props) => {
       onChange={(e) => {
         props.setText(e.target.value);
       }}
-      maxLength={80}
+      maxLength={75}
       disabled={props.disabled}
     />
   );
