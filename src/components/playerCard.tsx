@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, Variants } from "framer-motion";
 import { Player } from "../definitions/player";
 import { Input } from "./input";
 import { SubmitButton } from "./submitButton";
@@ -7,12 +8,34 @@ interface Props {
   player: Player;
 }
 
+const cardVariants: Variants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.5,
+    y: -200,
+    rotate: -10,
+  },
+  show: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    rotate: 0,
+    transition: {
+      duration: 0.5,
+      ease: "easeOut",
+    },
+  },
+};
+
 export const PlayerCard = (props: Props) => {
   const [text, setText] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <div className="flex flex-col bg-gray-300 w-60 p-3 rounded-xl border shadow-2xl">
+    <motion.div
+      className="flex flex-col bg-gray-300 w-60 p-3 rounded-xl border shadow-2xl"
+      variants={cardVariants}
+    >
       <span className="mb-8 h-32 text-2xl wrap-break-word hyphens-auto">
         {props.player.answer}
       </span>
@@ -29,6 +52,6 @@ export const PlayerCard = (props: Props) => {
         fullLength
         submittedText={submitted ? props.player.number : ""}
       />
-    </div>
+    </motion.div>
   );
 };
